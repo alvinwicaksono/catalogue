@@ -2,9 +2,13 @@ package id.co.nds.catalogue.controllers;
 
 import java.util.List;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.PositiveOrZero;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,6 +18,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import id.co.nds.catalogue.controllers.ControllerGroup.DeletingById;
+import id.co.nds.catalogue.controllers.ControllerGroup.GettingAllByCriteria;
+import id.co.nds.catalogue.controllers.ControllerGroup.PostingNew;
+import id.co.nds.catalogue.controllers.ControllerGroup.UpdatingById;
 import id.co.nds.catalogue.entities.UserEntity;
 import id.co.nds.catalogue.exception.ClientException;
 import id.co.nds.catalogue.exception.NotFoundException;
@@ -22,6 +30,7 @@ import id.co.nds.catalogue.models.UserModel;
 import id.co.nds.catalogue.services.UserService;
 
 @RestController
+@Validated
 @RequestMapping("/user")
 public class UserController {
     @Autowired
@@ -29,7 +38,7 @@ public class UserController {
 
     @PostMapping(value = "/add")
     public ResponseEntity<ResponseModel> postUserController(
-            @RequestBody UserModel userModel) {
+           @Validated(PostingNew.class) @RequestBody UserModel userModel) {
 
         try {
             // request
@@ -74,7 +83,8 @@ public class UserController {
     }
 
     @GetMapping(value = "/get/search")
-    public ResponseEntity<ResponseModel> searchUserController(@RequestBody UserModel userModel) {
+    public ResponseEntity<ResponseModel> searchUserController(
+        @Validated(GettingAllByCriteria.class) @RequestBody UserModel userModel) {
         try {
             // request
             List<UserEntity> user = userService.findAllByCriteria(userModel);
@@ -94,7 +104,7 @@ public class UserController {
     }
 
     @GetMapping(value = "/get/{id}")
-    public ResponseEntity<ResponseModel> getUserByIdController(@PathVariable Integer id) {
+    public ResponseEntity<ResponseModel> getUserByIdController(@PathVariable @NotNull @PositiveOrZero Integer id) {
         try {
             // request
             UserEntity user = userService.findById(id);
@@ -125,7 +135,7 @@ public class UserController {
 
     @PutMapping(value = "/update")
     public ResponseEntity<ResponseModel> putUserController(
-            @RequestBody UserModel userModel) {
+           @Validated(UpdatingById.class) @RequestBody UserModel userModel) {
         try {
             // request
             UserEntity user = userService.edit(userModel);
@@ -156,7 +166,7 @@ public class UserController {
 
     @DeleteMapping(value = "/delete")
     public ResponseEntity<ResponseModel> deleteUserController(
-            @RequestBody UserModel userModel) {
+            @Validated(DeletingById.class) @RequestBody UserModel userModel) {
         try {
             // request
             UserEntity user = userService.delete(userModel);

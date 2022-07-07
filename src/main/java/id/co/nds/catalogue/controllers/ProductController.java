@@ -2,9 +2,13 @@ package id.co.nds.catalogue.controllers;
 
 import java.util.List;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.PositiveOrZero;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,6 +18,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import id.co.nds.catalogue.controllers.ControllerGroup.DeletingById;
+import id.co.nds.catalogue.controllers.ControllerGroup.GettingAllByCriteria;
+import id.co.nds.catalogue.controllers.ControllerGroup.PostingNew;
+import id.co.nds.catalogue.controllers.ControllerGroup.UpdatingById;
 import id.co.nds.catalogue.entities.ProductEntity;
 import id.co.nds.catalogue.exception.ClientException;
 import id.co.nds.catalogue.exception.NotFoundException;
@@ -22,6 +30,7 @@ import id.co.nds.catalogue.models.ResponseModel;
 import id.co.nds.catalogue.services.ProductServices;
 
 @RestController
+@Validated
 @RequestMapping("/product")
 public class ProductController {
     @Autowired
@@ -29,7 +38,7 @@ public class ProductController {
 
     @PostMapping(value = "/add")
     public ResponseEntity<ResponseModel> postProductController(
-     @RequestBody ProductModel productModel) {
+     @Validated(PostingNew.class)@RequestBody ProductModel productModel) {
         
         try {
             // rq
@@ -75,7 +84,7 @@ public class ProductController {
 
      @GetMapping(value = "/get/search")
      public ResponseEntity<ResponseModel> searchProductController(
-        @RequestBody ProductModel productModel) {
+        @Validated(GettingAllByCriteria.class) @RequestBody ProductModel productModel) {
             try {
                 // req
                 List<ProductEntity> products = productService.findAllByCriteria(productModel);
@@ -94,7 +103,7 @@ public class ProductController {
         }
 
     @GetMapping(value = "/get/{id}")
-    public ResponseEntity<ResponseModel> getProductByIdController(@PathVariable Integer id) {
+    public ResponseEntity<ResponseModel> getProductByIdController(@PathVariable @NotNull @PositiveOrZero Integer id) {
         try {
             //req
             ProductEntity product = productService.findById(id);
@@ -125,7 +134,7 @@ public class ProductController {
 
     @PutMapping(value = "/update")
     public ResponseEntity<ResponseModel> putProductController(
-        @RequestBody ProductModel productModel){
+       @Validated(UpdatingById.class) @RequestBody ProductModel productModel){
             try {
                 //req
                 ProductEntity product = productService.edit(productModel);
@@ -156,7 +165,7 @@ public class ProductController {
 
        @DeleteMapping(value = "/delete")
         public ResponseEntity<ResponseModel> deleteProductController(
-            @RequestBody ProductModel productModel) {
+            @Validated(DeletingById.class) @RequestBody ProductModel productModel) {
                 try {
                     //req
                     ProductEntity product = productService.delete(productModel);

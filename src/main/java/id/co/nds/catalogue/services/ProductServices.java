@@ -26,13 +26,13 @@ public class ProductServices implements Serializable {
 
     public ProductEntity add(ProductModel productModel) throws ClientException {
         // Validation
-        productValidator.notNullCheckProductId(productModel.getId());
-        productValidator.nullCheckName(productModel.getName());
-        productValidator.validateName(productModel.getName());
-        productValidator.nullCheckQuantity(productModel.getQuantity());
-        productValidator.validateQuantity(productModel.getQuantity());
-        productValidator.nullCheckCategoryId(productModel.getCategoryId());
-        productValidator.validateCategoryId(productModel.getCategoryId());
+        // productValidator.notNullCheckProductId(productModel.getId());
+        // productValidator.nullCheckName(productModel.getName());
+        // productValidator.validateName(productModel.getName());
+        // productValidator.nullCheckQuantity(productModel.getQuantity());
+        // productValidator.validateQuantity(productModel.getQuantity());
+        // productValidator.nullCheckCategoryId(productModel.getCategoryId());
+        // productValidator.validateCategoryId(productModel.getCategoryId());
 
         Long count = productRepo.countByName(productModel.getName());
         if (count > 0) {
@@ -68,8 +68,8 @@ public class ProductServices implements Serializable {
 
     public ProductEntity findById(Integer id) throws ClientException, NotFoundException {
         //validation
-        productValidator.nullCheckProductId(id);
-        productValidator.validateProductId(id);
+        // productValidator.nullCheckProductId(id);
+        // productValidator.validateProductId(id);
 
         //process
         ProductEntity product = productRepo.findById(id).orElse(null);
@@ -82,8 +82,8 @@ public class ProductServices implements Serializable {
         throws ClientException, NotFoundException {
 
             //validation
-            productValidator.nullCheckProductId(productModel.getId());
-            productValidator.validateProductId(productModel.getId());
+            // productValidator.nullCheckProductId(productModel.getId());
+            // productValidator.validateProductId(productModel.getId());
 
             if (!productRepo.existsById(productModel.getId())) {
                 throw new NotFoundException(
@@ -95,7 +95,7 @@ public class ProductServices implements Serializable {
             product = findById(productModel.getId());
 
             if (productModel.getName() != null) {
-                productValidator.validateName(productModel.getName());
+                // productValidator.validateName(productModel.getName());
 
                 Long count = productRepo.countByName(productModel.getName());
                 if (count > 0) {
@@ -106,12 +106,12 @@ public class ProductServices implements Serializable {
             }
 
             if (productModel.getQuantity() != null){
-                productValidator.validateQuantity(productModel.getQuantity());
+                // productValidator.validateQuantity(productModel.getQuantity());
                 product.setQuantity(productModel.getQuantity());
             }
 
             if (productModel.getCategoryId() != null) {
-                productValidator.validateCategoryId(productModel.getCategoryId());
+                // productValidator.validateCategoryId(productModel.getCategoryId());
 
                 product.setCategoryId(productModel.getCategoryId());
             }
@@ -126,8 +126,8 @@ public class ProductServices implements Serializable {
     public ProductEntity delete(ProductModel productModel)
         throws ClientException, NotFoundException {
             //validation
-            productValidator.nullCheckProductId(productModel.getId());
-            productValidator.validateProductId(productModel.getId());
+            // productValidator.nullCheckProductId(productModel.getId());
+            // productValidator.validateProductId(productModel.getId());
 
             if (!productRepo.existsById(productModel.getId())){
                 throw new NotFoundException("Cannot find product with id: " + productModel.getId());

@@ -23,16 +23,16 @@ public class UserService implements Serializable {
 
     private UserRepo userRepo;
 
-    UserValidator userValidator = new UserValidator();
+     UserValidator userValidator = new UserValidator();
 
     public UserEntity add(UserModel userModel) throws ClientException {
         // validation
-        userValidator.notNullCheckUserId(userModel.getId());
-        userValidator.nullCheckFullname(userModel.getFullname());
-        userValidator.validateFullname(userModel.getFullname());
-        userValidator.nullCheckRoleId(userModel.getRoleId());
-        userValidator.validateRoleId(userModel.getRoleId());
-        userValidator.validateCallNumber(userModel.getCallNumber());
+        // userValidator.notNullCheckUserId(userModel.getId());
+        // userValidator.nullCheckFullname(userModel.getFullname());
+        // userValidator.validateFullname(userModel.getFullname());
+        // userValidator.nullCheckRoleId(userModel.getRoleId());
+        // userValidator.validateRoleId(userModel.getRoleId());
+        // userValidator.validateCallNumber(userModel.getCallNumber());
         // userValidator.nullCheckCreatorId(userModel.getActorId());
 
         if (userModel.getCallNumber() != null) {
@@ -72,8 +72,8 @@ public class UserService implements Serializable {
     public UserEntity findById(Integer id) throws ClientException, NotFoundException {
 
         // validation
-        userValidator.nullCheckUserId(id);
-        userValidator.validateUserId(id);
+        // userValidator.nullCheckUserId(id);
+        // userValidator.validateUserId(id);
 
         // process
         UserEntity user = userRepo.findById(id).orElse(null);
@@ -86,8 +86,8 @@ public class UserService implements Serializable {
             throws ClientException, NotFoundException {
 
         // validation
-        userValidator.nullCheckUserId(userModel.getId());
-        userValidator.validateUserId(userModel.getId());
+        // userValidator.nullCheckUserId(userModel.getId());
+        // userValidator.validateUserId(userModel.getId());
 
         if (!userRepo.existsById(userModel.getId())) {
             throw new NotFoundException("Cannot find user with id " + userModel.getId());
@@ -98,18 +98,18 @@ public class UserService implements Serializable {
         user = findById(userModel.getId());
 
         if (userModel.getFullname() != null) {
-            userValidator.validateFullname(userModel.getFullname());
+            // userValidator.validateFullname(userModel.getFullname());
 
             user.setFullname(userModel.getFullname());
         }
 
         if (userModel.getRoleId() != null) {
-            userValidator.validateRoleId(userModel.getRoleId());
+            // userValidator.validateRoleId(userModel.getRoleId());
             user.setRoleId(userModel.getRoleId());
         }
 
         if (userModel.getCallNumber() != null) {
-            userValidator.validateCallNumber(userModel.getCallNumber());
+            // userValidator.validateCallNumber(userModel.getCallNumber());
             user.setCallNumber(userModel.getCallNumber());
         }
 
@@ -122,8 +122,8 @@ public class UserService implements Serializable {
     public UserEntity delete(UserModel userModel)
             throws ClientException, NotFoundException {
         // Validation
-        userValidator.nullCheckUserId(userModel.getId());
-        userValidator.validateUserId(userModel.getId());
+        // userValidator.nullCheckUserId(userModel.getId());
+        // userValidator.validateUserId(userModel.getId());
 
         if (!userRepo.existsById(userModel.getId())) {
             throw new NotFoundException("Cannot find User with id" + userModel.getId());
