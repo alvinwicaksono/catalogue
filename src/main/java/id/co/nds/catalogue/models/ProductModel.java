@@ -12,7 +12,7 @@ import id.co.nds.catalogue.controllers.ControllerGroup.PostingNew;
 import id.co.nds.catalogue.controllers.ControllerGroup.RequestMethodById;
 import id.co.nds.catalogue.controllers.ControllerGroup.UpdatingById;
 
-public class ProductModel {
+public class ProductModel extends RecordModel{
     @Null(message = "Product id must be null", groups = { PostingNew.class})
     @NotNull (message = "Product Id cannot be null", groups= {UpdatingById.class, DeletingById.class})
     @PositiveOrZero (message = "Product Id must not be less than 0", groups = {GettingAllByCriteria.class, RequestMethodById.class})
@@ -30,12 +30,7 @@ public class ProductModel {
     @Pattern(regexp = "^(PC)[0-9]{4}$", message = "Product category pattern must be words only", groups = {PostingNew.class, GettingAllByCriteria.class, UpdatingById.class})
     private String categoryId;
 
-    //record
-    @PositiveOrZero (message = "Actor Id must not be less than 0", groups = {PostingNew.class, RequestMethodById.class})
-    private Integer actorId;
 
-    @Pattern(regexp = "^[A,a,N,n]$", message = "Product recStatus pattern must be words only", groups = {GettingAllByCriteria.class, UpdatingById.class})
-    private String recStatus;
     public Integer getId() {
         return id;
     }
@@ -60,18 +55,7 @@ public class ProductModel {
     public void setCategoryId(String categoryId) {
         this.categoryId = categoryId;
     }
-    public Integer getActorId() {
-        return actorId;
-    }
-    public void setActorId(Integer actorId) {
-        this.actorId = actorId;
-    }
-    public String getRecStatus() {
-        return recStatus;
-    }
-    public void setRecStatus(String recStatus) {
-        this.recStatus = recStatus;
-    }
+
 
     
 }

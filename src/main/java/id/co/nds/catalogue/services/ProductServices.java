@@ -9,12 +9,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import id.co.nds.catalogue.entities.ProductEntity;
+import id.co.nds.catalogue.entities.ProductInfoEntity;
 import id.co.nds.catalogue.exception.ClientException;
 import id.co.nds.catalogue.exception.NotFoundException;
 import id.co.nds.catalogue.globals.GlobalConstant;
 import id.co.nds.catalogue.models.ProductModel;
+import id.co.nds.catalogue.repos.ProductInfoRepo;
 import id.co.nds.catalogue.repos.ProductRepo;
 import id.co.nds.catalogue.specs.ProductSpec;
+import id.co.nds.catalogue.validators.CategoryValidator;
 import id.co.nds.catalogue.validators.ProductValidator;
 
 @Service
@@ -22,7 +25,11 @@ public class ProductServices implements Serializable {
     @Autowired
     private ProductRepo productRepo;
 
+    @Autowired
+    private ProductInfoRepo productInfoRepo;
+
     ProductValidator productValidator = new ProductValidator();
+    CategoryValidator categoryValidator = new CategoryValidator();
 
     public ProductEntity add(ProductModel productModel) throws ClientException {
         // Validation
@@ -65,6 +72,19 @@ public class ProductServices implements Serializable {
 
         return products;
     }
+
+    public List<ProductInfoEntity> findAllByCategory(String categoryId)
+        throws ClientException, NotFoundException {
+            //validation
+            categoryValidator.nullCheckCategoryId(categoryId);
+            categoryValidator.validateCategoryId(categoryId);
+
+            //process
+            List<ProductInfoEntity> product = productInfoRepo.findAllByCategory(categoryId);
+            productValidator.nullCheckObject(product);
+
+            return product;
+        }
 
     public ProductEntity findById(Integer id) throws ClientException, NotFoundException {
         //validation

@@ -12,7 +12,7 @@ import id.co.nds.catalogue.controllers.ControllerGroup.PostingNew;
 import id.co.nds.catalogue.controllers.ControllerGroup.RequestMethodById;
 import id.co.nds.catalogue.controllers.ControllerGroup.UpdatingById;
 
-public class UserModel {
+public class UserModel extends RecordModel {
     
     @Null(message = "User id must be null", groups = { PostingNew.class})
     @NotNull (message = "User Id cannot be null", groups= {UpdatingById.class, DeletingById.class})
@@ -30,12 +30,6 @@ public class UserModel {
     @NotNull (message = "User Role cannot be null", groups= {PostingNew.class})
     @Pattern(regexp = "^(\\+62|0)[0-9]{9,12}$", message = "Call Numbers must start with 0 or + 62 and followed by 9-12 digits number", groups = {PostingNew.class, GettingAllByCriteria.class, UpdatingById.class}) 
     private String callNumber;
-
-    //record
-    @PositiveOrZero (message = "Actor Id must not be less than 0", groups = {PostingNew.class, RequestMethodById.class})
-    private Integer actorId;
-    @Pattern(regexp = "^[A,a,N,n]$", message = "Product recStatus pattern must be words only", groups = {GettingAllByCriteria.class, UpdatingById.class})
-    private String recStatus;
     
     public Integer getId() {
         return id;
@@ -61,17 +55,6 @@ public class UserModel {
     public void setCallNumber(String callNumber) {
         this.callNumber = callNumber;
     }
-    public Integer getActorId() {
-        return actorId;
-    }
-    public void setActorId(Integer actorId) {
-        this.actorId = actorId;
-    }
-    public String getRecStatus() {
-        return recStatus;
-    }
-    public void setRecStatus(String recStatus) {
-        this.recStatus = recStatus;
-    }
+
     
 }

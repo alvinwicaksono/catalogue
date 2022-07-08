@@ -9,21 +9,26 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import id.co.nds.catalogue.entities.UserEntity;
+import id.co.nds.catalogue.entities.UserInfoEntity;
 import id.co.nds.catalogue.exception.ClientException;
 import id.co.nds.catalogue.exception.NotFoundException;
 import id.co.nds.catalogue.globals.GlobalConstant;
 import id.co.nds.catalogue.models.UserModel;
+import id.co.nds.catalogue.repos.UserInfoRepo;
 import id.co.nds.catalogue.repos.UserRepo;
 import id.co.nds.catalogue.specs.UserSpec;
+import id.co.nds.catalogue.validators.RoleValidator;
 import id.co.nds.catalogue.validators.UserValidator;
 
 @Service
 public class UserService implements Serializable {
     @Autowired
-
     private UserRepo userRepo;
 
+    @Autowired UserInfoRepo userInfoRepo;
+
      UserValidator userValidator = new UserValidator();
+     RoleValidator roleValidator = new RoleValidator();
 
     public UserEntity add(UserModel userModel) throws ClientException {
         // validation
@@ -68,6 +73,20 @@ public class UserService implements Serializable {
 
         return users;
     }
+
+    public List<UserInfoEntity> findAllByRole(String roleName)
+    throws ClientException, NotFoundException {
+        //validation
+        roleValidator.nullCheckName(roleName);
+        roleValidator.validateName(roleName);
+
+        //process
+        List<UserInfoEntity> user = userInfoRepo.findAllByRole(roleName);
+        roleValidator.nullCheckObject(user);
+
+        return user;
+    }
+
 
     public UserEntity findById(Integer id) throws ClientException, NotFoundException {
 
