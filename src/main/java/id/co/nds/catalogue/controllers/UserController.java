@@ -106,9 +106,37 @@ public class UserController {
     }
 
     @GetMapping(value = "/get/info")
-    public ResponseEntity<ResponseModel> getAllByCategoryController(@RequestParam String roleName) {
+    public ResponseEntity<ResponseModel> getAllByRoleController(@RequestParam String roleName) {
         try {
             List<UserInfoEntity> user = userService.findAllByRole(roleName);
+
+            ResponseModel response = new ResponseModel();
+            response.setMsg("Request successfully");
+            response.setData(user);
+            return ResponseEntity.ok(response);
+        } catch (ClientException e) {
+            ResponseModel response = new ResponseModel();
+            response.setMsg(e.getMessage());
+            return ResponseEntity.badRequest().body(response);
+
+        } catch (NotFoundException e) {
+            ResponseModel response = new ResponseModel();
+            response.setMsg(e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+
+        } catch (Exception e) {
+            ResponseModel response = new ResponseModel();
+            response.setMsg("Sorry, there is a failure on our server");
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().body(response);
+        }
+
+    }
+    
+    @GetMapping(value = "/get/role")
+    public ResponseEntity<ResponseModel> getUsersByRoleController(@RequestParam String roleName) {
+        try {
+            List<UserEntity> user = userService.findUsersByRole(roleName);
 
             ResponseModel response = new ResponseModel();
             response.setMsg("Request successfully");

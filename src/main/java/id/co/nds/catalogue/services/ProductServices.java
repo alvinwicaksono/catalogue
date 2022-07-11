@@ -86,6 +86,19 @@ public class ProductServices implements Serializable {
             return product;
         }
 
+    public List<ProductEntity> findProductsByCategoryId(String categoryId)
+            throws ClientException, NotFoundException {
+                //validation
+                categoryValidator.nullCheckCategoryId(categoryId);
+                categoryValidator.validateCategoryId(categoryId);
+
+                //process
+                List<ProductEntity> product = productRepo.findProductsByCategoryId(categoryId);
+                productValidator.nullCheckObject(product);
+
+                return product;
+            }
+
     public ProductEntity findById(Integer id) throws ClientException, NotFoundException {
         //validation
         // productValidator.nullCheckProductId(id);

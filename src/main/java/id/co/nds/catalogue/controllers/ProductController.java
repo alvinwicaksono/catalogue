@@ -131,6 +131,37 @@ public class ProductController {
 
     }
 
+    @GetMapping(value = "/get/category")
+    public ResponseEntity<ResponseModel> getProductsByCategoryIdController(
+            @RequestParam String categoryId) {
+        try {
+            // Request
+            List<ProductEntity> product = productService.findProductsByCategoryId(categoryId);
+
+            // response
+            ResponseModel response = new ResponseModel();
+            response.setMsg("Request successfully");
+            response.setData(product);
+            return ResponseEntity.ok(response);
+
+        } catch (ClientException e) {
+            ResponseModel response = new ResponseModel();
+            response.setMsg(e.getMessage());
+            return ResponseEntity.badRequest().body(response);
+
+        } catch (NotFoundException e) {
+            ResponseModel response = new ResponseModel();
+            response.setMsg(e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+
+        } catch (Exception e) {
+            ResponseModel response = new ResponseModel();
+            response.setMsg("Sorry, there is a failure on our server");
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().body(response);
+        }
+    }
+
     @GetMapping(value = "/get/{id}")
     public ResponseEntity<ResponseModel> getProductByIdController(@PathVariable @NotNull @PositiveOrZero Integer id) {
         try {

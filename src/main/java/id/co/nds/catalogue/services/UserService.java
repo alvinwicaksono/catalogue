@@ -74,6 +74,21 @@ public class UserService implements Serializable {
         return users;
     }
 
+    public List<UserEntity> findUsersByRole(String roleName)
+    throws ClientException, NotFoundException {
+        //validation
+        roleValidator.nullCheckName(roleName);
+        roleValidator.validateName(roleName);
+
+        //process
+        List<UserEntity> user = userRepo.findUsersByRole(roleName);
+        roleValidator.nullCheckObject(user);
+
+        return user;
+    }
+
+    
+
     public List<UserInfoEntity> findAllByRole(String roleName)
     throws ClientException, NotFoundException {
         //validation

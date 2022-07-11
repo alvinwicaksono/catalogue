@@ -1,11 +1,13 @@
 package id.co.nds.catalogue.entities;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
@@ -21,6 +23,17 @@ public class CategoryEntity {
 
     @Column(name = "name")
     private String name;
+
+    @OneToMany(targetEntity = ProductEntity.class, mappedBy = "categoryId")
+    private List<ProductEntity> products;
+
+    public List<ProductEntity> getProducts() {
+        return products;
+    }
+
+    public void setProducts(List<ProductEntity> products) {
+        this.products = products;
+    }
 
     @Column(name = "created_date")
     private Timestamp createdDate;

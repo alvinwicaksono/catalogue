@@ -1,11 +1,13 @@
 package id.co.nds.catalogue.entities;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
@@ -22,6 +24,17 @@ public class RoleEntity {
 
     @Column(name = "name")
     private String name;
+
+    @OneToMany(targetEntity = UserEntity.class, mappedBy = "roleId")
+    private List<UserEntity> users;
+
+    public List<UserEntity> getUsers() {
+        return users;
+    }
+
+    public void setUsers(List<UserEntity> users) {
+        this.users = users;
+    }
 
     @Column(name = "created_date")
     private Timestamp createdDate;

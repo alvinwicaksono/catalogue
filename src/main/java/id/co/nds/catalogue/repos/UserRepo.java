@@ -1,5 +1,7 @@
 package id.co.nds.catalogue.repos;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Modifying;
@@ -30,4 +32,6 @@ JpaSpecificationExecutor<UserEntity> {
     + GlobalConstant.REC_STATUS_NON_ACTIVE + "', deleter_id = ?2 , deleted_date = NOW() " + "WHERE id = ?1", nativeQuery = true)
     Integer doDelete(Integer id, Integer deleterId);    // ?2 karna deleter Id ada diposisis 2
 
+    @Query(value = "SELECT u.*, r.name AS role_name FROM  ms_user as u " + "JOIN ms_role AS r on u.role_id = r.id " + "WHERE LOWER(r.name) = LOWER(?1)", nativeQuery = true)
+    List<UserEntity> findUsersByRole(String roleName);
 }
