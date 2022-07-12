@@ -34,4 +34,7 @@ JpaSpecificationExecutor<UserEntity> {
 
     @Query(value = "SELECT u.*, r.name AS role_name FROM  ms_user as u " + "JOIN ms_role AS r on u.role_id = r.id " + "WHERE LOWER(r.name) = LOWER(?1)", nativeQuery = true)
     List<UserEntity> findUsersByRole(String roleName);
+
+    @Query(value = "SELECT u.role_id FROM ms_user AS u WHERE u.id = ?1", nativeQuery = true)
+    String getUserRoleById(@Param("id") Integer id);
 }

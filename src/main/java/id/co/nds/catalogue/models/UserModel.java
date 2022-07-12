@@ -27,7 +27,6 @@ public class UserModel extends RecordModel {
     @Pattern(regexp = "^(R)[0-9]{4}$", message = "User Role pattern must be words only", groups = {PostingNew.class, GettingAllByCriteria.class, UpdatingById.class})
     private String roleId;
 
-    @NotNull (message = "User Role cannot be null", groups= {PostingNew.class})
     @Pattern(regexp = "^(\\+62|0)[0-9]{9,12}$", message = "Call Numbers must start with 0 or + 62 and followed by 9-12 digits number", groups = {PostingNew.class, GettingAllByCriteria.class, UpdatingById.class}) 
     private String callNumber;
     

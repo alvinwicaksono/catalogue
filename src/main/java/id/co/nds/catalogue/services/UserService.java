@@ -116,6 +116,12 @@ public class UserService implements Serializable {
         return user;
     }
 
+    public String getUserRoleById(Integer id) throws ClientException, NotFoundException {
+        userValidator.nullCheckUserId(id);
+        
+        return userRepo.getUserRoleById(id);
+    }
+
     public UserEntity edit(UserModel userModel)
             throws ClientException, NotFoundException {
 
