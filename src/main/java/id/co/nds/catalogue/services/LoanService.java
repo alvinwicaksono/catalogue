@@ -32,16 +32,10 @@ public class LoanService implements Serializable {
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = { Exception.class })
     public LoanEntity doLoan(LoanModel loanModel) throws Exception {
-        loanValidator.nullCheckUserId(loanModel.getUserId());
-        loanValidator.validateUserId(loanModel.getUserId());
-        
         if (!userRepo.existsById(loanModel.getUserId())) {
             throw new NotFoundException("Cannot find User with id: " + loanModel.getUserId());
         }
 
-        loanValidator.notNullCheckLoanId(loanModel.getId());
-        // loanValidator.nullCheckCustomerName(loanModel.getCustomerName());
-        // loanValidator.validateCustomerName(loanModel.getCustomerName().trim());
         LoanEntity loan = new LoanEntity();
         loan.setUserId(loanModel.getUserId());
         loan.setRoleId(userService.getUserRoleById(loanModel.getUserId()));

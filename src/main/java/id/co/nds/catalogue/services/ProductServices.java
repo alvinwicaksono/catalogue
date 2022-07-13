@@ -185,6 +185,11 @@ public class ProductServices implements Serializable {
             // return productRepo.save(product);
         }
 
+        public List<ProductEntity> findProductsLessThan5Quantity() {
+            List<ProductEntity> products = productRepo.findProductsLessThan5Quantity();
+            return products;
+        }
+
     
 
 }
